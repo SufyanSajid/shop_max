@@ -53,14 +53,14 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
+    final url = Uri.parse(
+        'https://flutterupdate1-default-rtdb.firebaseio.com/products.json');
     try {
-      final url = Uri.parse(
-          'https://flutterupdate1-default-rtdb.firebaseio.com/products.json');
       final response = await http.get(url);
       print(json.decode(response.body));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
 
-      List<Product> loadedProducts = [];
+      final List<Product> loadedProducts = [];
 
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
@@ -78,6 +78,7 @@ class Products with ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
+      print(e.toString());
       print('Your error is in fetch and set products');
     }
   }
@@ -88,13 +89,15 @@ class Products with ChangeNotifier {
     try {
       final response = await http.post(
         url,
-        body: json.encode({
-          'title': product.title,
-          'description': product.description,
-          'price': product.price,
-          'image': product.imageUrl,
-          'favorite': product.isFavorite,
-        }),
+        body: json.encode(
+          {
+            'title': product.title,
+            'description': product.description,
+            'price': product.price,
+            'image': product.imageUrl,
+            'favorite': product.isFavorite,
+          },
+        ),
       );
 
       final newProduct = Product(

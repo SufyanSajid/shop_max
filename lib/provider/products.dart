@@ -63,6 +63,7 @@ class Products with ChangeNotifier {
       final List<Product> loadedProducts = [];
 
       extractedData.forEach((prodId, prodData) {
+        print(prodData['price'].runtimeType);
         loadedProducts.add(
           Product(
             id: prodId,
@@ -74,6 +75,7 @@ class Products with ChangeNotifier {
           ),
         );
       });
+
       _items = loadedProducts;
 
       notifyListeners();

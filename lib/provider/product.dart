@@ -1,16 +1,36 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 class Product with ChangeNotifier {
-  final String id;
+  late final String id;
   final String title;
   final String description;
   final double price;
   final String imageUrl;
   bool isFavorite;
 
-  void toggleFavoriteStatus() {
+  Future<void> toggleFavoriteStatus(String id) async {
+    final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
+
+    final url = Uri.parse(
+        'https://flutterupdate1-default-rtdb.firebaseio.com/products/$id.json');
+    try {
+      final response = await http.patch(url,
+          body: json.encode({
+            'favorite': isFavorite,
+          }));
+      if (response.statusCode >= 400) {
+        isFavorite = oldStatus;
+        notifyListeners();
+      }
+    } catch (e) {
+      isFavorite = oldStatus;
+      notifyListeners();
+    }
   }
 
   Product({

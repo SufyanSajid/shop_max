@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop/provider/product.dart';
-import 'package:shop/provider/products.dart';
+import '/provider/product.dart';
+import '/provider/products.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/editScreen';

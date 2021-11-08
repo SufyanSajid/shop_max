@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shop/Models/http_exception.dart';
-import 'package:shop/provider/product.dart';
+import '/Models/http_exception.dart';
+import '/provider/product.dart';
 import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
@@ -40,6 +40,8 @@ class Products with ChangeNotifier {
     //       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     // ),
   ];
+  final String authToken;
+  Products(this.authToken, this._items);
 
   List<Product> get items {
     return [..._items];
@@ -55,7 +57,7 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     final url = Uri.parse(
-        'https://flutterupdate1-default-rtdb.firebaseio.com/products.json');
+        'https://flutterupdate1-default-rtdb.firebaseio.com/products.json?auth=$authToken');
     try {
       final response = await http.get(url);
       //print(json.decode(response.body));
